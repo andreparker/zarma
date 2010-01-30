@@ -104,6 +104,9 @@
     <Compile Include="Components\Objects\VisualObject\Visuals\MessageBoxVisual.cs" />
     <Compile Include="Components\Objects\VisualObject\Visuals\ScrollingBackGround.cs" />
     <Compile Include="Components\Objects\VisualObject\Visuals\VisualTypes.cs" />
+    <Compile Include="Components\ParticleSystem\Particle.cs" />
+    <Compile Include="Components\ParticleSystem\ParticleEmitter.cs" />
+    <Compile Include="Components\ParticleSystem\ParticleSystem.cs" />
     <Compile Include="Components\PostProcessing\PostEffects\BrightExtractPostEffect.cs" />
     <Compile Include="Components\PostProcessing\PostEffects\CombinePostEffect.cs" />
     <Compile Include="Components\PostProcessing\PostEffects\HorzBlurPostEffect.cs" />
