@@ -1,0 +1,2 @@
+e:\Projects\Astroids\Astroids\Content\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Code\Astroids\Astroids\Content\obj\x86\Debug\ResolveAssemblyReference.cache
