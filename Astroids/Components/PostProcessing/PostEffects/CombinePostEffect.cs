@@ -13,9 +13,9 @@ namespace Asteroids.Components.PostProcessing.PostEffects
         RenderTarget2D surface;
 
         private float saturation0 = 1.0f;
-        private float saturation1 = 0.8f;
+        private float saturation1 = 1.0f;
         private float intensity0 = 1.0f;
-        private float intensity1 = 1.50f;
+        private float intensity1 = 2.00f;
 
         public float Intensity1
         {

@@ -11,9 +11,17 @@ namespace Asteroids.Components.ParticleSystem
     public class Particle
     {
         private Vector2 position;
+        private Vector2 velocity;
+       
         private float startTime = 0.0f;
         Color color;
         bool active;
+
+        public Vector2 Velocity
+        {
+            get { return velocity; }
+            set { velocity = value; }
+        }
 
         public float StartTime
         {
@@ -49,6 +57,7 @@ namespace Asteroids.Components.ParticleSystem
         public void Update( float tick )
         {
             startTime += tick;
+            position += velocity;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Asteroids.Components.PostProcessing.PostEffects
     {
         Effect effect;
         RenderTarget2D surface;
-        float brightnessThreshold = 0.15f;
+        float brightnessThreshold = 0.35f;
 
         public float BrightnessThreshold
         {

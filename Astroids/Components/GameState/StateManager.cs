@@ -16,6 +16,7 @@ namespace Asteroids.Components.GameState
 {
     using Components.Objects.GameObject;
     using Components.Objects.VisualObject;
+    using Components.ParticleSystem;
 
     /// <summary>
     /// This is a game component that implements IUpdateable.
@@ -25,6 +26,13 @@ namespace Asteroids.Components.GameState
         private State currentState = null;
         private VisualObjectManager visualManager;
         private GameObjectManager objectManager;
+        private ParticleSystem particleSystem;
+
+        public ParticleSystem ParticleSystem
+        {
+            get { return particleSystem; }
+        }
+
 
         public VisualObjectManager VisualManager
         {
@@ -36,11 +44,16 @@ namespace Asteroids.Components.GameState
             get { return objectManager; }
         }
 
-        public StateManager(Game game,VisualObjectManager visualManager_,GameObjectManager objectManager_)
+        public StateManager(
+            Game game,
+            VisualObjectManager visualManager_,
+            GameObjectManager objectManager_,
+            ParticleSystem particleSystem_ )
             : base(game)
         {
             visualManager = visualManager_;
             objectManager = objectManager_;
+            particleSystem = particleSystem_;
         }
 
         public void SetState(State state_)

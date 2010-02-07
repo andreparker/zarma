@@ -11,7 +11,9 @@ namespace Asteroids.Components.ParticleSystem
     public abstract class ParticleEmitter
     {
         private Color startColor,endColor;
-        private Vector2 velocity,position;
+        private Vector2 position;
+        private float velocity;
+       
      
         private Texture2D image;
         private float particleTime;
@@ -19,10 +21,31 @@ namespace Asteroids.Components.ParticleSystem
         private int particleIndex;
         private Particle[] particles;
 
+        public float Velocity
+        {
+            get { return velocity; }
+            set { velocity = value; }
+        }
+
+        public Particle[] Particles
+        {
+            get { return particles; }
+        }
+
+        public Texture2D Image
+        {
+            get { return image; }
+        }
+
         public Vector2 Position
         {
             get { return position; }
             set { position = value; }
+        }
+
+        public float ParticleTime
+        {
+            get { return particleTime; }
         }
 
         public ParticleEmitter( 
@@ -30,7 +53,7 @@ namespace Asteroids.Components.ParticleSystem
             float particleTime_,
             Color startColor_,
             Color endColor_ ,
-            Vector2 velocity_,
+            float velocity_,
             int particleCount_ )
         {
             particleTime = particleTime_;
@@ -45,6 +68,7 @@ namespace Asteroids.Components.ParticleSystem
             particles = new Particle[particleCount];
         }
 
+
         protected virtual void ActivateParticle( Particle particle )
         {
             particle.Active = true;
@@ -55,26 +79,55 @@ namespace Asteroids.Components.ParticleSystem
 
         public void Emit(int count)
         {
-            int particleSearcCount = 0;
+            UInt32 particleSearchCount = 0;
             int particlesAdded = 0;
-            while( particleSearcCount < particleCount 
-                   || particlesAdded == count )
+            while( particleSearchCount < (UInt32)particleCount 
+                   && particlesAdded < count )
             {
-                if( particles[ particleIndex ].Active == false )
+                if( particles[ particleIndex ] == null ||
+                    particles[ particleIndex ].Active == false )
                 {
                     ++particlesAdded;
+                    if( particles[particleIndex] == null )
+                    {
+                        particles[particleIndex] = new Particle();
+                    }
+
                     ActivateParticle(particles[particleIndex]);
 
                 }
 
-                ++particleSearcCount;
+                ++particleSearchCount;
                 ++particleIndex;
 
                 if (particleIndex >= particleCount) particleIndex = 0;
             }
         }
 
-        public abstract void Update(GameTime time_);
-        public abstract void Draw(GameTime time_);
+        public virtual void Update(GameTime time_)
+        {
+            float tick = (float)time_.ElapsedGameTime.TotalSeconds;
+            foreach ( Particle particle in particles )
+            {
+                if( particle != null && particle.Active )
+                {
+                    float life = particle.StartTime / ParticleTime;
+
+                    Color clr = Color.Lerp(startColor, endColor, life);
+                    clr.A = (byte)MathHelper.Lerp(255.0f, 0.0f, life);
+
+                    particle.Color = clr;
+
+                    particle.Update(tick);
+
+                    if( life >= 1.0f )
+                    {
+                        particle.Active = false;
+                    }
+                }
+            }
+        }
+
+        public abstract void Draw(GameTime time_,SpriteBatch spriteBatch_);
     }
 }
