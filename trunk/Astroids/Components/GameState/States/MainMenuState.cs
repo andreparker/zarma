@@ -12,6 +12,7 @@ namespace Asteroids.Components.GameState.States
     using Components.Input;
     using Components.Input.Inputs;
     using Components.Objects.VisualObject.Visuals;
+    using Components.ParticleSystem.Emitters;
 
     class MainMenuState : State
     {
@@ -20,12 +21,15 @@ namespace Asteroids.Components.GameState.States
 
         Vector2 scrollDirection;
         float scrollDistance;
+        float tick = 0.0f;
 
         Texture2D backGroundImage;
         Effect scrollEffect;
 
         SimpleMenu menu;
         InputController<SimpleMenu> controller;
+
+        SmokeEmitter emitter;
 
         public MainMenuState( 
             StateManager manager_,
@@ -40,6 +44,20 @@ namespace Asteroids.Components.GameState.States
 
             scrollDirection = new Vector2(1.0f, 0.0f);
             scrollDistance = 0.0f;
+
+            emitter = new SmokeEmitter
+                (
+                Manager.ParticleSystem.Content.Load<Texture2D>("particle_puff"),
+                1.5f, Color.Orange,Color.DarkGray, 1.0f, 500
+                );
+
+            Vector2 direction = new Vector2(0.0f, 1.0f);
+            Vector2 position = new Vector2(526.0f, 125.0f);
+
+            emitter.Direction = direction;
+            emitter.Position = position;
+           
+            Manager.ParticleSystem.AddEmitter(emitter);
         }
 
         public override void Enter()
@@ -73,7 +91,16 @@ namespace Asteroids.Components.GameState.States
 
         public override void Update(GameTime gameTime_)
         {
+            tick += (float)gameTime_.ElapsedGameTime.TotalSeconds;
+
             controller.ProcessInput(menu,gameTime_);
+
+            if( tick > 0.05f )
+            {
+                tick = 0.0f;
+                emitter.Emit(10);
+            }
+            
         }
 
         public void UpdateBackGround0( GameTime time_ )

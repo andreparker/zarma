@@ -24,6 +24,7 @@ namespace Asteroids
     using Components.Gui;
     using Components.Input.Inputs;
     using Components.Sprite;
+    using Components.ParticleSystem;
 
     /// <summary>
     /// This is the main type for your game
@@ -38,6 +39,7 @@ namespace Asteroids
         GameObjectManager gameObjectManager;
         VisualObjectManager visualObjectManager;
         PostProcessManager postEffectManager;
+        ParticleSystem particleSystem;
         SpriteManager spriteManager;
 
         float tick = 0;
@@ -54,7 +56,7 @@ namespace Asteroids
             get { return messageBoxImage; }
         }
 
-        int numBlurPasses = 6;
+        int numBlurPasses = 10;
 
 
         public Asteroids()
@@ -74,12 +76,19 @@ namespace Asteroids
             gameObjectManager = new GameObjectManager(this);
             visualObjectManager = new VisualObjectManager(this,spriteBatch,spriteManager);
             postEffectManager = new PostProcessManager(this,spriteBatch,mainSurface);
-            stateManager = new StateManager(this,visualObjectManager,gameObjectManager);
+            particleSystem = new ParticleSystem(this, spriteBatch);
+            stateManager = new StateManager(
+                this,
+                visualObjectManager,
+                gameObjectManager,
+                particleSystem );
 
             stateManager.UpdateOrder = 1;
             gameObjectManager.UpdateOrder = 2;
             visualObjectManager.UpdateOrder = 3;
             visualObjectManager.DrawOrder = 1;
+            particleSystem.DrawOrder = 2;
+            particleSystem.UpdateOrder = 4;
 
             visualObjectManager.RegisterFactory(new MenuVisualFactory(this));
             visualObjectManager.RegisterFactory(new MessageVisualFactory(this));
@@ -94,6 +103,7 @@ namespace Asteroids
             Components.Add(stateManager);
             Components.Add(gameObjectManager);
             Components.Add(visualObjectManager);
+            Components.Add(particleSystem);
         }
 
         private void InitializeMiscSettings()
